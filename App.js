@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 // custom components
 import PlaceInput from "./src/components/PlaceInput/PlaceInput";
 import PlaceList from "./src/components/PlaceList/PlaceList";
+import PlaceDetail from "./src/components/PlaceDetail/PlaceDetail";
 
 export default class App extends Component {
   state = {
@@ -31,11 +32,28 @@ export default class App extends Component {
     }));
   };
 
-  placeSelectedHandler = () => {};
+  placeSelectedHandler = key => {
+    this.setState(prevState => ({
+      selectedPlace: prevState.places.find(place => place.key === key)
+    }));
+  };
+
+  placeDeletedHandler = () => {};
+
+  modalClosedHandler = () => {
+    this.setState({
+      selectedPlace: null
+    });
+  };
 
   render() {
     return (
       <View style={styles.container}>
+        <PlaceDetail
+          selectedPlace={this.state.selectedPlace}
+          onModalClosed={this.modalClosedHandler}
+          onItemDeleted={this.placeDeletedHandler}
+        />
         <PlaceInput onPlaceAdded={this.onPlaceAdded} />
         <PlaceList
           places={this.state.places}
