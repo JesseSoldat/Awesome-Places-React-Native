@@ -1,27 +1,46 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
+// custom components
+import PlaceInput from "./src/components/PlaceInput/PlaceInput";
+import PlaceList from "./src/components/PlaceList/PlaceList";
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
+  state = {
+    places: [],
+    selectedPlace: null
+  };
+
+  uuidv4 = () => {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == "x" ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  };
+
+  onPlaceAdded = name => {
+    this.setState(prevState => ({
+      places: prevState.places.concat({
+        key: this.uuidv4(),
+        name,
+        image: {
+          uri: "https://via.placeholder.com/350x150"
+        }
+      })
+    }));
+  };
+
+  placeSelectedHandler = () => {};
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>JLab</Text>
+        <PlaceInput onPlaceAdded={this.onPlaceAdded} />
+        <PlaceList
+          places={this.state.places}
+          onItemSelected={this.placeSelectedHandler}
+        />
       </View>
     );
   }
@@ -30,18 +49,9 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    padding: 26,
+    justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
+    backgroundColor: "#fff"
   }
 });
