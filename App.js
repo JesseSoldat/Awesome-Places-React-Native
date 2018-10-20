@@ -38,7 +38,14 @@ export default class App extends Component {
     }));
   };
 
-  placeDeletedHandler = () => {};
+  placeDeletedHandler = () => {
+    this.setState(prevState => ({
+      places: prevState.places.filter(
+        place => place.key !== prevState.selectedPlace.key
+      ),
+      selectedPlace: null
+    }));
+  };
 
   modalClosedHandler = () => {
     this.setState({

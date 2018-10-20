@@ -14,7 +14,12 @@ const PlaceDetail = props => {
   if (props.selectedPlace) {
     modalContent = (
       <View>
-        <Text>{props.selectedPlace.name}</Text>
+        <Image
+          resizeMode="cover"
+          source={props.selectedPlace.image}
+          style={styles.placeImage}
+        />
+        <Text style={styles.placeName}>{props.selectedPlace.name}</Text>
       </View>
     );
   }
@@ -25,17 +30,43 @@ const PlaceDetail = props => {
       visible={props.selectedPlace !== null}
       animationType="slide"
     >
-      <View>{modalContent}</View>
-      <View>
-        <TouchableOpacity onPress={props.onItemDeleted}>
+      <View style={styles.modalContainer}>{modalContent}</View>
+
+      <View style={styles.btnContainer}>
+        <TouchableOpacity style={styles.button} onPress={props.onItemDeleted}>
           <Text>Delete</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={props.onModalClosed}>
+        <TouchableOpacity style={styles.button} onPress={props.onModalClosed}>
           <Text>Close</Text>
         </TouchableOpacity>
       </View>
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    margin: 22
+  },
+  placeImage: {
+    width: "100%",
+    height: 200
+  },
+  placeName: {
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 28
+  },
+  btnContainer: {
+    margin: 22
+  },
+  button: {
+    width: "100%",
+    margin: 5,
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10
+  }
+});
 
 export default PlaceDetail;
